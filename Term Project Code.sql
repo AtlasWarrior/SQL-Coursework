@@ -1,0 +1,126 @@
+USE benjaminj4501_project;
+
+CREATE TABLE CUSTOMER
+(CustomerID INT(8),
+CustomerName VARCHAR(30),
+CustomerAddress VARCHAR(50),
+CustomerPhone INT(10),
+CustomerEmail VARCHAR(40),
+CONSTRAINT Customer_PK PRIMARY KEY (CustomerID));
+
+CREATE TABLE CUSTOMERORDER
+(OrderID INT(8),
+OrderDate DATE,
+CustomerAddress VARCHAR(50),
+OrderTotal FLOAT,
+BookISBN INT(13),
+CONSTRAINT CustomerOrder_PK PRIMARY KEY (OrderID),
+CONSTRAINT CustomerOrder_FK FOREIGN KEY (CustomerAddress) 
+REFERENCES CUSTOMER(CustomerAddress));
+
+CREATE TABLE PAYMENT
+(PaymentID INT(8),
+CustomerID INT(8),
+PaymentMethod VARCHAR(7),
+PaymentBillingAddress VARCHAR(50),
+PaymentShippingAddress VARCHAR(50),
+PaymentAmount FLOAT,
+CONSTRAINT PAYMENT_PK PRIMARY KEY (PaymentID),
+CONSTRAINT PAYMENT_FK FOREIGN KEY (CustomerID) 
+REFERENCES CUSTOMER(CustomerID));
+
+CREATE TABLE CUSTOMERREVIEW
+(CustomerID INT(8),
+CustomerName VARCHAR(30),
+CustomerRating CHAR,
+CustomerComment VARCHAR(5000),
+CONSTRAINT CUSTOMERREVIEW_PK PRIMARY KEY (CustomerID),
+CONSTRAINT CUSTOMERREVIEW_FK FOREIGN KEY (CustomerID) 
+REFERENCES CUSTOMER(CustomerID));
+
+CREATE TABLE AUTHOR
+(AuthorID INT(8),
+AuthorFirstName VARCHAR(15),
+AuthorLastName VARCHAR(15),
+CONSTRAINT AUTHOR_PK PRIMARY KEY (AuthorID));
+
+CREATE TABLE PUBLISHER
+(PublisherID INT(8),
+PublisherName VARCHAR(15),
+PublisherCity VARCHAR(15),
+PublisherState CHAR(2),
+CONSTRAINT PUBLISHER_PK PRIMARY KEY (PublisherID));
+
+CREATE TABLE BOOK
+(ISBN INT(13),
+AuthorID INT(8),
+PublisherID INT(8),
+Title VARCHAR(20),
+Price FLOAT,
+CONSTRAINT BOOK_PK PRIMARY KEY (ISBN),
+CONSTRAINT BOOK_FK FOREIGN KEY (AuthorID) 
+REFERENCES AUTHOR(AuthorID),
+CONSTRAINT BOOK_FK2 FOREIGN KEY (PublisherID) 
+REFERENCES PUBLISHER(AuthorID));
+
+CREATE TABLE WAREHOUSE 
+(WarehouseID INT(8),
+WarehouseManager VARCHAR(15),
+WarehouseLocation CHAR(2),
+ISBN INT(13),
+CONSTRAINT WAREHOUSE_PK PRIMARY KEY (WarehouseID),
+CONSTRAINT WAREHOUSE_FK FOREIGN KEY (ISBN) REFERENCES BOOK(ISBN));
+
+CREATE TABLE SUPPLIER
+(SupplierID INT(8),
+SupplierName VARCHAR(15),
+SupplierAddress VARCHAR(50),
+SupplierPhone INT(10),
+CONSTRAINT SUPPLIER_PK PRIMARY KEY (SupplierID));
+
+
+DELETE FROM BOOK WHERE Title = "The Alchemist";
+DELETE FROM SUPPLIER WHERE SupplierID = "13112345";
+DELETE FROM WAREHOUSE WHERE WarehouseID = "11344268";
+
+
+
+UPDATE SUPPLIER
+SET SupplierPhone = 5204307611
+WHERE SupplierName = "Bob Mitchell";
+
+UPDATE WAREHOUSE 
+SET WarehouseManager = "Jamie Lee"
+WHERE WarehouseLocation = "AZ";
+
+UPDATE BOOK
+SET Price = 10.99
+WHERE Title = "The Kite Runner";
+
+Select * FROM AUTHOR;
+
+SELECT PublisherName, PublisherCity
+FROM Publisher
+WHERE PublisherState = "AZ";
+
+SELECT * FROM CUSTOMER
+WHERE CustomerPhone IS NULL
+OR CustomerAddress IS NULL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
